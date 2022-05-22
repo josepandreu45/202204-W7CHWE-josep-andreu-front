@@ -1,22 +1,15 @@
-import jwtDecode from "jwt-decode";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import LoginForm from "./components/LoginForm/LoginForm";
-import { loginActionCreator } from "./redux/features/usersSlice";
+import { Navigate, Route, Routes } from "react-router-dom";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const userInfo = jwtDecode(token);
-      dispatch(loginActionCreator(userInfo));
-    }
-  }, [dispatch]);
   return (
     <div className="App">
-      <LoginForm />
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
     </div>
   );
 }
