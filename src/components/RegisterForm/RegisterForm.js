@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginThunk } from "../../redux/thunks/usersThunks";
-import styled from "styled-components";
 import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+import { registerThunk } from "../../redux/thunks/usersThunks";
 
-const LoginFormContainer = styled.div`
+const RegisterFormContainer = styled.div`
   display: flex;
   height: 100vh;
   justify-content: center;
   align-items: center;
   form {
     padding: 15px;
-    height: 250px;
-    width: 200px;
+    height: 350px;
+    width: 300px;
     border-radius: 15px;
     border: 2px solid #166fe5;
     display: flex;
@@ -24,6 +24,8 @@ const LoginFormContainer = styled.div`
   }
 
   input {
+    width: 200px;
+    height: 30px;
     border: 3px solid #166fe5;
     border-radius: 15px;
   }
@@ -41,12 +43,19 @@ const LoginFormContainer = styled.div`
     color: #166fe5;
     font-size: 22px;
   }
+  .image {
+    color: #166fe5;
+    border: none;
+    border-radius: 0;
+  }
 `;
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const blankFields = {
     username: "",
     password: "",
+    name: "",
+    image: "",
   };
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(blankFields);
@@ -54,15 +63,24 @@ const LoginForm = () => {
   const changeData = (event) => {
     setFormData({ ...formData, [event.target.id]: event.target.value });
   };
-  const submitLogin = (event) => {
+  const submitRegister = (event) => {
     event.preventDefault();
-    dispatch(loginThunk(formData));
+
+    dispatch(registerThunk(formData));
   };
 
   return (
-    <LoginFormContainer>
-      <form noValidate onSubmit={submitLogin}>
+    <RegisterFormContainer>
+      <form noValidate onSubmit={submitRegister}>
         <h2>SOCIAL NETWORK</h2>
+        <input
+          placeholder="name"
+          id="name"
+          type="text"
+          value={formData.name}
+          onChange={changeData}
+          autoComplete="off"
+        />
         <input
           placeholder="Username"
           id="username"
@@ -80,11 +98,20 @@ const LoginForm = () => {
           onChange={changeData}
           autoComplete="off"
         />
-        <input className="submit" type="submit" value={"ENTRAR"} />
-        <NavLink to="/register">Registrarse</NavLink>
+        <input
+          className="image"
+          placeholder="image"
+          id="image"
+          type="file"
+          value={formData.igame}
+          onChange={changeData}
+          autoComplete="off"
+        />
+        <input className="submit" type="submit" value={"REGISTRARSE"} />
+        <NavLink to="/login">Login</NavLink>
       </form>
-    </LoginFormContainer>
+    </RegisterFormContainer>
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

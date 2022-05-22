@@ -1,8 +1,11 @@
 import axios from "axios";
-import { loginActionCreator } from "../features/usersSlice";
+import {
+  loginActionCreator,
+  registerActionCreator,
+} from "../features/userSlice";
 import jwtDecode from "jwt-decode";
 
-const loginThunk = (userData) => async (dispatch) => {
+export const loginThunk = (userData) => async (dispatch) => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_API_URL}/users/login`,
     userData
@@ -14,4 +17,18 @@ const loginThunk = (userData) => async (dispatch) => {
   dispatch(loginActionCreator(userInfo));
 };
 
-export default loginThunk;
+export const registerThunk =
+  ({ username, password, name, image }) =>
+  async (dispatch) => {
+    const body = {
+      username,
+      password,
+      name,
+      image,
+    };
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_API_URL}/users/register`,
+      body
+    );
+    dispatch(registerActionCreator(data));
+  };
