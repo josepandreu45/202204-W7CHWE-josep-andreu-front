@@ -1,23 +1,22 @@
-import logo from './logo.svg';
-import './App.css';
+import jwtDecode from "jwt-decode";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import LoginForm from "./components/LoginForm/LoginForm";
+import { loginActionCreator } from "./redux/features/usersSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const userInfo = jwtDecode(token);
+      dispatch(loginActionCreator(userInfo));
+    }
+  }, [dispatch]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <LoginForm />
     </div>
   );
 }
